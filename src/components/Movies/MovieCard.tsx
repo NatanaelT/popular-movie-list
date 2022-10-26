@@ -1,7 +1,9 @@
-import { Card, CardMedia, CardContent, Typography, CardActions, IconButton, LinearProgress, Box } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, CardActions, IconButton, LinearProgress, Box, Grid, makeStyles, Stack } from "@mui/material";
+import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import AddIcon from '@mui/icons-material/Add';
+import { fontWeight, maxWidth } from "@mui/system";
 
 interface MovieCardProps {
     title: string;
@@ -28,31 +30,33 @@ export const MovieCard: React.FC<MovieCardProps> = ({ title, vote_average, poste
 
     return (
         <Card>
-            <CardMedia
-                component="img"
-                image={getMoviePosterUrl(poster_path)}
-                alt={title}
-            />
+            <div style={{ position: 'relative' }}>
+                <CardMedia
+                    component="img"
+                    image={getMoviePosterUrl(poster_path)}
+                    alt={title}
+                />
+                <IconButton sx={{ position: 'absolute', top: 10, right: 10 }} aria-label="add to favorites">
+                    <FavoriteBorderIcon sx={{
+                        color: 'white',
+                        '.MuiIcon-colorPrimary': { color: 'succes' },
+                        '.MuiIcon-colorSecondary': { color: 'red' },
+                        '.MuiIcon-colorAction': { color: 'red' }
+                    }} />
+                </IconButton>
+            </div>
             <Box sx={{ width: '100%', color: getColor(vote_average) }}>
                 <LinearProgress variant="determinate" color="inherit" value={normalise(vote_average)} />
             </Box>
-            <CardContent sx={{
+            <p style={{
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
-                textOverflow: 'clip',
+                textOverflow: 'ellipsis',
+                fontWeight: 'bold',
+                padding: '5px'
             }}>
-                <Typography gutterBottom variant="h6" component="div">
-                    {title}
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteBorderIcon />
-                </IconButton>
-                <IconButton aria-label="see movie details">
-                    <AddIcon />
-                </IconButton>
-            </CardActions>
-        </Card>
+                {title}
+            </p>
+        </Card >
     )
 }
