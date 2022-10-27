@@ -1,32 +1,67 @@
-import { Grid } from '@mui/material';
+import { Grid, CircularProgress, Box } from '@mui/material';
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import { MovieCard } from './MovieCard';
+import useMoviesSearch from './useMoviesSearch';
+
+interface IMovie {
+    adult: boolean;
+    backdrop_path: string;
+    genre_ids: number[];
+    id: number;
+    original_language: string;
+    original_title: string;
+    overview: string;
+    popularity: number;
+    poster_path: string;
+    release_date: string;
+    title: string;
+    video: boolean;
+    vote_average: number;
+    vote_count: number;
+}
 
 export const MovieList: React.FC = () => {
-    const [movies, setMovies] = useState([])
+    const [page, setPage] = useState(1)
+    const [pageNumber, setPageNumber] = useState(1)
 
-    React.useEffect(() => { getMovies() }, [])
+    const {
+        movies,
+        hasMore,
+        loading,
+        error
+    } = useMoviesSearch('', pageNumber)
 
-    const getMovies = async () => {
-        try {
-            const response = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=6738e24c66b1eaa9f4403bb9474e3670&language=pt-BR&page=1&sort_by=popularity.desc?`);
-            console.log(response);
-            setMovies(response.data.results)
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    const observer = useRef<any>()
+    const lastMovieElementRef = useCallback((node: HTMLElement | null) => {
+        if (loading) return
+        if (observer.current) observer.current.disconnect()
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasMore) {
+                setPageNumber(prevPageNumber => prevPageNumber + 1)
+            }
+        })
+        if (node) observer.current.observe(node)
+    }, [loading, hasMore])
 
     return (
-        <Grid sx={{ width: '50%', marginLeft: '25%', marginTop: 2, marginBottom: 2 }} justifyContent="center" container spacing={2}>
-            {movies.map(({ title, vote_average, poster_path }) => {
-                return (
-                    <Grid item xs={12} md={6} lg={4} xl={3}>
-                        <MovieCard title={title} vote_average={vote_average} poster_path={poster_path} />
-                    </Grid>
-                )
+        <Grid sx={{ width: '50%', marginLeft: '25%', marginTop: 2, marginBottom: 5 }} justifyContent="center" container spacing={2}>
+            {movies.map(({ title, vote_average, poster_path }: IMovie, index: number) => {
+                if (movies.length === index + 1) {
+                    return (
+                        <Grid key={title} ref={lastMovieElementRef} item xs={12} md={6} lg={4} xl={3}>
+                            <MovieCard title={title} vote_average={vote_average} poster_path={poster_path} />
+                        </Grid>
+                    )
+                } else {
+                    return (
+                        <Grid key={title} item xs={12} md={6} lg={4} xl={3}>
+                            <MovieCard title={title} vote_average={vote_average} poster_path={poster_path} />
+                        </Grid>
+                    )
+                }
             })}
-        </Grid>
+            {loading && <Box><CircularProgress /></Box>}
+        </Grid >
     )
 }
