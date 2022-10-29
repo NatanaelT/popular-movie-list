@@ -5,29 +5,17 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import AddIcon from '@mui/icons-material/Add';
 import { fontWeight, maxWidth } from "@mui/system";
 import { IMovie } from "./MovieType";
+import { getColorValueBased } from "../../../utils/getColorValueBased";
 
 interface MovieCardProps {
     movie: IMovie;
 }
 
 export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
-
     const { title, poster_path, vote_average, id } = movie
 
-    const getMoviePosterUrl = (img_path: string) => {
-        return `https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${img_path}`
-    }
-
+    const getMoviePosterUrl = (img_path: string) => `https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${img_path}`
     const normalise = (value: number) => ((value - 0) * 100) / (10 - 0);
-
-    const getColor = (value: number) => {
-        if (value <= 5)
-            return '#E53A3A'
-        if (value < 7)
-            return '#F9A51A'
-        if (value >= 7)
-            return '#0B9764'
-    }
 
     return (
         <Card>
@@ -40,15 +28,10 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
                     />
                 </a>
                 <IconButton sx={{ position: 'absolute', top: 10, right: 10 }} aria-label="add to favorites">
-                    <FavoriteBorderIcon sx={{
-                        color: 'white',
-                        '.MuiIcon-colorPrimary': { color: 'succes' },
-                        '.MuiIcon-colorSecondary': { color: 'red' },
-                        '.MuiIcon-colorAction': { color: 'red' }
-                    }} />
+                    <FavoriteBorderIcon sx={{ color: 'white' }} />
                 </IconButton>
             </div>
-            <Box sx={{ width: '100%', color: getColor(vote_average) }}>
+            <Box sx={{ width: '100%', color: getColorValueBased(vote_average, 5, 7) }}>
                 <LinearProgress variant="determinate" color="inherit" value={normalise(vote_average)} />
             </Box>
             <p style={{

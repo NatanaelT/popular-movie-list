@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { MovieDetails } from "../../src/components/Movies/MovieDetails";
+import { MovieDetails } from "../../src/components/Movies/MovieDetails/MovieDetails";
 
 export default function Movie() {
     const router = useRouter();

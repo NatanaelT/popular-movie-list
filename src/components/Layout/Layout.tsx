@@ -11,8 +11,7 @@ export const Layout = ({ children, ...props }: LayoutProps) => {
             <Head>
                 <title>{props.title}</title>
             </Head>
-            <main style={{ marginTop: '64px' }}>{children}</main>
+            <main style={{ marginTop: '56px' }}>{children}</main>
         </>
-        // <main  {...props}>{children}</main>
     )
 }

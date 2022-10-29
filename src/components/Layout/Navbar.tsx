@@ -38,8 +38,8 @@ export default function Navbar() {
 
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+    <Box sx={{ flexGrow: 1, maxHeight: '56px' }}>
+      <AppBar position="fixed" sx={{ maxHeight: '56px' }}>
         <Toolbar>
           <Button onClick={() => window.location.href = '/'} sx={{ color: '#fff', backgroundColor: '#3b8ad9' }}>
             Início
@@ -48,7 +48,7 @@ export default function Navbar() {
             id="asynchronous-demo"
             noOptionsText={search ? 'Nenhum resultado encontrado' : 'Digite para pesquisar'}
             size='small'
-            sx={{ width: 300, marginLeft: '10px', }}
+            sx={{ width: 200, marginLeft: '10px', }}
             open={open}
             onChange={(event, newValue) => {
               if (newValue) window.location.href = `/movie?id=${newValue.id}`

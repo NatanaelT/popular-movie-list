@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useState, useRef, useCallback } from 'react'
 import { MovieCard } from './MovieCard';
 import { IMovie } from './MovieType';
-import useMoviesSearch from './useMoviesSearch';
+import useMoviesSearch from '../../hooks/useMoviesSearch';
 
 export const MovieList: React.FC = () => {
     const [pageNumber, setPageNumber] = useState(1)
