@@ -17,12 +17,12 @@ export default function useMoviesSearch(query: string, pageNumber: number) {
     let cancel: any
     axios({
       method: 'GET',
-      url: `https://api.themoviedb.org/3/movie/popular?api_key=6738e24c66b1eaa9f4403bb9474e3670&language=pt-BR&sort_by=popularity.desc?`,
+      url: '/api/movie',
       params: { q: query, page: pageNumber },
       cancelToken: new axios.CancelToken(c => cancel = c)
     }).then(res => {
       setMovies((prevMovies: any) => {
-        return [...new Set([...prevMovies, ...res.data.results])]
+        return [...new Set([...prevMovies, ...res.data.data.results])]
       })
       setHasMore(res.data.total_result !== movies.length)
       setLoading(false)

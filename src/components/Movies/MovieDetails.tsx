@@ -19,12 +19,12 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
         getInitialData()
     }, [])
 
+
     const getInitialData = async () => {
         setCarregando(true)
-        axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=6738e24c66b1eaa9f4403bb9474e3670&language=pt-BR`).then((res) => {
-            console.log('res', res.data)
-            setMovie(res.data)
-        }).finally(() => setCarregando(false))
+        await axios.get(`/api/movie/${id}`).then((res) => {
+            setMovie(res.data.data)
+        }).catch((error) => console.log('error', error)).finally(() => setCarregando(false))
     }
 
     return (
