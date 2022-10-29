@@ -1,0 +1,36 @@
+.moviePoster {
+  border-radius: 5px;
+}
+
+.productContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  overflow: auto;
+  flex-direction: row;
+  width: 75%;
+  margin: auto;
+}
+
+.productContainer div:first-child {
+  margin: 15px;
+}
+
+.productContainer h1,
+.productContainer h2,
+.productContainer h3,
+.productContainer p,
+.productContainer span {
+  margin: 0px;
+  color: white;
+}
+
+.productContainer h3 {
+  margin-top: 10px;
+}
+
+.genreContainer span:not(:last-child)::after {
+  content: ', ';
+}
