@@ -40,7 +40,7 @@ export default function Navbar() {
       <AppBar position="fixed">
         <Toolbar>
           <Button onClick={() => window.location.href = '/'} sx={{ color: '#fff', backgroundColor: '#3b8ad9' }}>
-            Home
+            Início
           </Button>
             <Autocomplete
               id="asynchronous-demo"
