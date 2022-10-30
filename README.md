@@ -14,7 +14,7 @@
    - Typescript
  
 ## References
-   - [Infinite Scroll](https://www.youtube.com/watch?v=NZKUirTtxcg&t=1s](https://www.youtube.com/watch?v=NZKUirTtxcg&t=1s)
+   - [Infinite Scroll](https://www.youtube.com/watch?v=NZKUirTtxcg&t=1s)
    - [Debounce Function](https://www.youtube.com/watch?v=PySFIsgXNZ0&t=848s)
 
 ## Final considerations
