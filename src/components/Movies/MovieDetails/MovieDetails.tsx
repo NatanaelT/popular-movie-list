@@ -17,8 +17,9 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
 
     useEffect(() => {
         getInitialData()
-    }, [])
+    }, [id])
 
+    console.log('movieId', id)
 
     const getInitialData = async () => {
         setCarregando(true)
