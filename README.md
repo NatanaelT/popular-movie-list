@@ -1,5 +1,5 @@
 ## General considerations
-  This was done for a interview test which consists in:
+  This was done for a mid-level interview test which consists in:
   - Listing popular movies from [TheMovieDB](https://www.themoviedb.org/documentation/api)
   - Infinite scroll
   - Search in every page with 500ms debounce method
