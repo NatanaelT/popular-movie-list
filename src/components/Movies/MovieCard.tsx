@@ -25,35 +25,45 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     const getMoviePosterUrl = (img_path: string) => `https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${img_path}`
     const normalise = (value: number) => ((value - 0) * 100) / (10 - 0);
 
+    const handleIconClick = () => {
+        if (isFavorite === -1) {
+            dispatch(setFavorites({ id: movie.id, title: movie.title }))
+        } else {
+            dispatch(removeFavorite(id))
+        }
+    }
+
     return (
-        <Card sx={{ '&:hover': { cursor: 'pointer' } }}>
-            <div style={{ position: 'relative' }}>
-                <a onClick={() => router.push(`/movie?id=${id}`)} target="_blank">
+        <Card>
+            <Box sx={{ position: 'relative' }}>
+                <IconButton onClick={handleIconClick} sx={{ position: 'absolute', top: 10, right: 10 }} aria-label="add to favorites">
+                    {isFavorite === -1 ?
+                        <FavoriteBorderIcon sx={{ color: 'white' }} /> :
+                        <FavoriteIcon sx={{ color: 'palevioletred' }} />
+                    }
+                </IconButton>
+            </Box>
+            <Box sx={{ '&:hover': { cursor: 'pointer' } }} onClick={() => router.push(`/movie?id=${id}`)}>
+                <div>
                     <CardMedia
                         component="img"
                         image={getMoviePosterUrl(poster_path)}
                         alt={title}
                     />
-                </a>
-                <IconButton sx={{ position: 'absolute', top: 10, right: 10 }} aria-label="add to favorites">
-                    {isFavorite === -1 ?
-                        <FavoriteBorderIcon onClick={() => dispatch(setFavorites({ id: movie.id, title: movie.title }))} sx={{ color: 'white' }} /> :
-                        <FavoriteIcon onClick={() => dispatch(removeFavorite(movie.id))} sx={{ color: 'palevioletred' }} />
-                    }
-                </IconButton>
-            </div>
-            <Box sx={{ width: '100%', color: getColorValueBased(vote_average, 5, 7) }}>
-                <LinearProgress variant="determinate" color="inherit" value={normalise(vote_average)} />
+                </div>
+                <Box sx={{ width: '100%', color: getColorValueBased(vote_average, 5, 7) }}>
+                    <LinearProgress variant="determinate" color="inherit" value={normalise(vote_average)} />
+                </Box>
+                <p style={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    fontWeight: 'bold',
+                    padding: '5px'
+                }}>
+                    {title}
+                </p>
             </Box>
-            <p style={{
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                fontWeight: 'bold',
-                padding: '5px'
-            }}>
-                {title}
-            </p>
         </Card >
     )
 }

@@ -6,7 +6,6 @@ export default function Movie() {
     const queryParams = router.query;
     const id: number = queryParams?.id ? Number(queryParams.id) : 0;
 
-    console.log(id);
     return (
         <>
             {id &&

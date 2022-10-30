@@ -12,8 +12,7 @@ export const MovieList: React.FC = () => {
         movies,
         hasMore,
         loading,
-        error
-    } = useMoviesSearch('', pageNumber)
+    } = useMoviesSearch(pageNumber)
 
     const observer = useRef<any>()
     const lastMovieElementRef = useCallback((node: HTMLElement | null) => {
@@ -30,15 +29,15 @@ export const MovieList: React.FC = () => {
     return (
         <Grid sx={{ width: '50%', marginLeft: '25%', marginTop: 2, marginBottom: 5 }} justifyContent="center" container spacing={2}>
             {movies.map((movie: IMovie, index: number) => {
-                if (movies.length === index + 1) {
+                if (movies.length !== index + 1) {
                     return (
-                        <Grid key={movie.title} ref={lastMovieElementRef} item xs={12} md={6} lg={4} xl={3}>
+                        <Grid key={`last_${movie.id}_${movie.title}`} ref={lastMovieElementRef} item xs={12} md={6} lg={4} xl={3}>
                             <MovieCard movie={movie} />
                         </Grid>
                     )
                 } else {
                     return (
-                        <Grid key={movie.title} item xs={12} md={6} lg={4} xl={3}>
+                        <Grid key={`${movie.id}_${movie.title}`} item xs={12} md={6} lg={4} xl={3}>
                             <MovieCard movie={movie} />
                         </Grid>
                     )

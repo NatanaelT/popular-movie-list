@@ -55,7 +55,7 @@ export default function Navbar() {
 
 
   return (
-    <Box sx={{ flexGrow: 1, maxHeight: '56px' }}>
+    <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" sx={{ maxHeight: '56px' }}>
         <Toolbar>
           <Button onClick={() => router.push('/')} sx={{ color: '#fff', backgroundColor: '#3b8ad9' }}>
@@ -155,12 +155,12 @@ export default function Navbar() {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             {favoriteMovies.map((movie, index) => (
-              <>
+              <div key={`${movie.title}_${movie.id}`}>
                 <MenuItem key={movie.id} onClick={() => router.push(`/movie?id=${movie.id}`)} >
                   {movie.title}
                 </MenuItem>
                 {index === favoriteMovies.length - 1 ? null : <Divider />}
-              </>
+              </div>
             ))}
           </Menu>
 

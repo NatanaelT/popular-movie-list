@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-export default function useMoviesSearch(query: string, pageNumber: number) {
+export default function useMoviesSearch(pageNumber: number) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [movies, setMovies] = useState<any>([])
   const [hasMore, setHasMore] = useState(false)
-
-  useEffect(() => {
-    setMovies([])
-  }, [query])
 
   useEffect(() => {
     setLoading(true)
@@ -18,9 +14,10 @@ export default function useMoviesSearch(query: string, pageNumber: number) {
     axios({
       method: 'GET',
       url: '/api/movie',
-      params: { q: query, page: pageNumber },
+      params: { page: pageNumber },
       cancelToken: new axios.CancelToken(c => cancel = c)
     }).then(res => {
+
       setMovies((prevMovies: any) => {
         return [...new Set([...prevMovies, ...res.data.data.results])]
       })
