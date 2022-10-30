@@ -56,7 +56,7 @@ export default function Navbar() {
   }
 
   const handleOnChange = (event: React.ChangeEvent<{}>, newValue: IMovie | null) => {
-    if (newValue) router.push(`/movie?id=${newValue?.id}`)
+    if (newValue) router.push(`/movie/${newValue?.id}`)
     setSearch(null)
     setValue(null)
     setInputValue('')
@@ -168,7 +168,7 @@ export default function Navbar() {
           >
             {favoriteMovies.map((movie, index) => (
               <div key={movie.id}>
-                <MenuItem onClick={() => router.push(`/movie?id=${movie.id}`)} >
+                <MenuItem onClick={() => router.push(`/movie/${movie.id}`)} >
                   {movie.title}
                 </MenuItem>
                 {index === favoriteMovies.length - 1 ? null : <Divider />}

@@ -43,7 +43,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
                     }
                 </IconButton>
             </Box>
-            <Box sx={{ '&:hover': { cursor: 'pointer' } }} onClick={() => router.push(`/movie?id=${id}`)}>
+            <Box sx={{ '&:hover': { cursor: 'pointer' } }} onClick={() => router.push(`/movie/${id}`)}>
                 <div>
                     <CardMedia
                         component="img"

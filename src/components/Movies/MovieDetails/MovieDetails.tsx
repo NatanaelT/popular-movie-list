@@ -8,7 +8,7 @@ import style from './MovieDetails.module.css';
 import { MovieDetailsSkeleton } from './MovieDetailsSkeleton';
 
 interface MovieDetailsProps {
-    id: number
+    id: string | string[];
 }
 
 export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
