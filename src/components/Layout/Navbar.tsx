@@ -46,9 +46,9 @@ export default function Navbar() {
 
     axios({
       method: 'GET',
-      url: '/api/movie',
+      url: '/api/search',
       params: { q: debouncedSearch },
-    }).then((res) => setOptions(res.data.data.results)).catch((error) => console.log('error', error)).finally(() => setLoading(false));
+    }).then((res) => setOptions(res.data.results)).catch((error) => console.log('error', error)).finally(() => setLoading(false));
   }
 
   const favoriteMovies = useSelector(selectFavorites);

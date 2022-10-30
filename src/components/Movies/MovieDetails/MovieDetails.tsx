@@ -22,7 +22,7 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
     const getInitialData = async () => {
         setCarregando(true)
         await axios.get(`/api/movie/${id}`).then((res) => {
-            setMovie(res.data.data)
+            setMovie(res.data)
         }).catch((error) => console.log('error', error)).finally(() => setCarregando(false))
     }
 

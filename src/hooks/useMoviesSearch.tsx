@@ -19,7 +19,7 @@ export default function useMoviesSearch(pageNumber: number) {
     }).then(res => {
 
       setMovies((prevMovies: any) => {
-        return [...new Set([...prevMovies, ...res.data.data.results])]
+        return [...new Set([...prevMovies, ...res.data.results])]
       })
       setHasMore(res.data.total_result !== movies.length)
       setLoading(false)
