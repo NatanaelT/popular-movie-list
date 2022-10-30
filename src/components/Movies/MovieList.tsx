@@ -1,9 +1,8 @@
-import { Grid, CircularProgress, Box } from '@mui/material';
-import axios from 'axios';
-import React, { useState, useRef, useCallback } from 'react'
+import { Box, CircularProgress, Grid } from '@mui/material';
+import React, { useCallback, useRef, useState } from 'react';
+import useMoviesSearch from '../../hooks/useMoviesSearch';
 import { MovieCard } from './MovieCard';
 import { IMovie } from './MovieType';
-import useMoviesSearch from '../../hooks/useMoviesSearch';
 
 export const MovieList: React.FC = () => {
     const [pageNumber, setPageNumber] = useState(1)
@@ -31,13 +30,13 @@ export const MovieList: React.FC = () => {
             {movies.map((movie: IMovie, index: number) => {
                 if (movies.length !== index + 1) {
                     return (
-                        <Grid key={`last_${movie.id}_${movie.title}`} ref={lastMovieElementRef} item xs={12} md={6} lg={4} xl={3}>
+                        <Grid key={`last_${movie.id}`} ref={lastMovieElementRef} item xs={12} md={6} lg={4} xl={3}>
                             <MovieCard movie={movie} />
                         </Grid>
                     )
                 } else {
                     return (
-                        <Grid key={`${movie.id}_${movie.title}`} item xs={12} md={6} lg={4} xl={3}>
+                        <Grid key={movie.id} item xs={12} md={6} lg={4} xl={3}>
                             <MovieCard movie={movie} />
                         </Grid>
                     )

@@ -1,28 +1,32 @@
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import SearchIcon from '@mui/icons-material/Search';
-import { Autocomplete, CircularProgress, TextField, Button, Badge, IconButton, Menu, MenuItem, Divider } from '@mui/material';
+import { Autocomplete, Badge, Button, CircularProgress, Divider, IconButton, Menu, MenuItem, TextField } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import * as React from 'react';
-import useDebounce from '../../hooks/useDebounce';
-import MenuIcon from '@mui/icons-material/Menu';
-import { styled, alpha } from '@mui/material/styles';
 import axios from 'axios';
+import { useRouter } from 'next/router';
+import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { selectFavorites } from '../../../store/slices/favoritesSlice';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useRouter } from 'next/router';
+import useDebounce from '../../hooks/useDebounce';
+import { IMovie } from '../Movies/MovieType';
 
 export default function Navbar() {
   const [search, setSearch] = React.useState<string | null>(null);
   const [openAutocomplete, setOpenAutocomplete] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [options, setOptions] = React.useState<readonly any[]>([]);
-
-  const router = useRouter();
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [value, setValue] = React.useState<string | null>(null);
+  const [inputValue, setInputValue] = React.useState('');
+
+  const favoriteMovies = useSelector(selectFavorites);
+  const router = useRouter();
   const openFavorites = Boolean(anchorEl);
+  const debouncedSearch = useDebounce(search ?? '', 500);
+
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -34,13 +38,12 @@ export default function Navbar() {
     setOptions([]);
   }, [openAutocomplete]);
 
-  const debouncedSearch = useDebounce(search ?? '', 500);
 
   React.useEffect(() => {
     if (debouncedSearch) fetchData();
   }, [debouncedSearch]);
 
-  async function fetchData() {
+  const fetchData = async () => {
     setLoading(true);
     setOptions([]);
 
@@ -51,8 +54,12 @@ export default function Navbar() {
     }).then((res) => setOptions(res.data.results)).catch((error) => console.log('error', error)).finally(() => setLoading(false));
   }
 
-  const favoriteMovies = useSelector(selectFavorites);
-
+  const handleOnChange = (event: React.ChangeEvent<{}>, newValue: IMovie | null) => {
+    if (newValue) router.push(`/movie?id=${newValue?.id}`)
+    setSearch(null)
+    setValue(null)
+    setInputValue('')
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -64,22 +71,27 @@ export default function Navbar() {
 
           <Box sx={{ flexGrow: 1 }}>
             <Autocomplete
-              id="asynchronous-demo"
+              id="asynchronous-movies-search"
               noOptionsText={search ? 'Nenhum resultado encontrado' : 'Digite para pesquisar'}
               size='small'
               sx={{ width: 350, marginLeft: '10px', }}
+              value={value}
+              inputValue={inputValue}
               open={openAutocomplete}
-              onChange={(event, newValue) => {
-                if (newValue) router.push(`/movie?id=${newValue.id}`)
-                setSearch(null)
-              }}
-              onOpen={() => {
-                setOpenAutocomplete(true);
-              }}
-              onClose={() => {
-                setOpenAutocomplete(false);
-              }}
+              onChange={(event, newValue) => handleOnChange(event, newValue)}
+              onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
+              onOpen={() => setOpenAutocomplete(true)}
+              onClose={() => setOpenAutocomplete(false)}
               getOptionLabel={(option) => option.title}
+              renderOption={(props, option) => {
+                return (
+                  <li {...props} key={option.id}>
+                    {option.title}
+                  </li>
+                );
+              }}
+              clearOnBlur
+              clearOnEscape
               options={options}
               loading={loading}
               renderInput={(params) => (
@@ -118,7 +130,6 @@ export default function Navbar() {
             </Badge>
           </IconButton>
 
-
           <Menu
             anchorEl={anchorEl}
             id="account-menu"
@@ -155,8 +166,8 @@ export default function Navbar() {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             {favoriteMovies.map((movie, index) => (
-              <div key={`${movie.title}_${movie.id}`}>
-                <MenuItem key={movie.id} onClick={() => router.push(`/movie?id=${movie.id}`)} >
+              <div key={movie.id}>
+                <MenuItem onClick={() => router.push(`/movie?id=${movie.id}`)} >
                   {movie.title}
                 </MenuItem>
                 {index === favoriteMovies.length - 1 ? null : <Divider />}

@@ -48,7 +48,7 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
                                 {movie?.genres?.length > 0 && (
                                     <div className={style.genreContainer}>
                                         <h3>Gênero</h3>
-                                        {movie?.genres.map((genre) => (<span key={`${genre.id}`}>{genre.name}</span>))}
+                                        {movie?.genres.map((genre) => (<span key={genre.id}>{genre.name}</span>))}
                                     </div>
                                 )}
                                 <h3>Sinopse</h3>
