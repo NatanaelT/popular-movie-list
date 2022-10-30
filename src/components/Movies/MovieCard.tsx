@@ -6,6 +6,9 @@ import AddIcon from '@mui/icons-material/Add';
 import { fontWeight, maxWidth } from "@mui/system";
 import { IMovie } from "./MovieType";
 import { getColorValueBased } from "../../../utils/getColorValueBased";
+import { removeFavorite, selectFavorites, setFavorites } from "../../../store/slices/favoritesSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 interface MovieCardProps {
     movie: IMovie;
@@ -14,13 +17,18 @@ interface MovieCardProps {
 export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     const { title, poster_path, vote_average, id } = movie
 
+    const router = useRouter();
+    const dispatch = useDispatch()
+    const favoriteMovies = useSelector(selectFavorites);
+    const isFavorite = favoriteMovies.findIndex((movie) => movie.id === id);
+
     const getMoviePosterUrl = (img_path: string) => `https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${img_path}`
     const normalise = (value: number) => ((value - 0) * 100) / (10 - 0);
 
     return (
-        <Card>
+        <Card sx={{ '&:hover': { cursor: 'pointer' } }}>
             <div style={{ position: 'relative' }}>
-                <a href={`/movie?id=${id}`} target="_blank">
+                <a onClick={() => router.push(`/movie?id=${id}`)} target="_blank">
                     <CardMedia
                         component="img"
                         image={getMoviePosterUrl(poster_path)}
@@ -28,7 +36,10 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
                     />
                 </a>
                 <IconButton sx={{ position: 'absolute', top: 10, right: 10 }} aria-label="add to favorites">
-                    <FavoriteBorderIcon sx={{ color: 'white' }} />
+                    {isFavorite === -1 ?
+                        <FavoriteBorderIcon onClick={() => dispatch(setFavorites({ id: movie.id, title: movie.title }))} sx={{ color: 'white' }} /> :
+                        <FavoriteIcon onClick={() => dispatch(removeFavorite(movie.id))} sx={{ color: 'palevioletred' }} />
+                    }
                 </IconButton>
             </div>
             <Box sx={{ width: '100%', color: getColorValueBased(vote_average, 5, 7) }}>
