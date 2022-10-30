@@ -8,7 +8,7 @@ import style from './MovieDetails.module.css';
 import { MovieDetailsSkeleton } from './MovieDetailsSkeleton';
 
 interface MovieDetailsProps {
-    id: number
+    id: string | string[];
 }
 
 export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
@@ -19,12 +19,10 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
         getInitialData()
     }, [id])
 
-    console.log('movieId', id)
-
     const getInitialData = async () => {
         setCarregando(true)
         await axios.get(`/api/movie/${id}`).then((res) => {
-            setMovie(res.data.data)
+            setMovie(res.data)
         }).catch((error) => console.log('error', error)).finally(() => setCarregando(false))
     }
 
@@ -34,10 +32,10 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
                 <div className={style.movieContainer}>
                     {carregando ? <MovieDetailsSkeleton /> : (
                         <>
-                            <div>
+                            <div className={style.moviePosterImg}>
                                 <img className={style.moviePoster} src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movie?.poster_path}`} />
                             </div>
-                            <div>
+                            <div className={style.infoContainer}>
                                 <h1 >{movie?.title}</h1>
                                 <h2 >{movie?.tagline}</h2>
                                 <h2 className={style.voteAverage}>
@@ -50,7 +48,7 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
                                 {movie?.genres?.length > 0 && (
                                     <div className={style.genreContainer}>
                                         <h3>Gênero</h3>
-                                        {movie?.genres.map((genre) => (<span>{genre.name}</span>))}
+                                        {movie?.genres.map((genre) => (<span key={genre.id}>{genre.name}</span>))}
                                     </div>
                                 )}
                                 <h3>Sinopse</h3>

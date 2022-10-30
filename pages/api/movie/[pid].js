@@ -7,5 +7,5 @@ export default async (req, res) => {
     method: 'GET',
     url: URL,
   });
-  res.status(200).json({ data: response.data });
+  res.status(200).json(response.data);
 };
