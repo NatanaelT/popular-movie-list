@@ -12,7 +12,7 @@ interface MovieDetailsProps {
 }
 
 export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
-    const [movie, setMovie] = useState<IMovieDetails>({} as IMovieDetails)
+    const [movie, setMovie] = useState<IMovieDetails | undefined>(undefined)
     const [carregando, setCarregando] = useState(true)
 
     useEffect(() => {
@@ -27,12 +27,12 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
     }
 
     return (
-        <Layout title={movie.title}>
+        <Layout title={movie?.title ?? ''}>
             <Box className={style.movieWrapper} sx={{ backgroundImage: `url(https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces${movie?.backdrop_path}),linear-gradient(90deg,rgba(2, 0, 36, 1) 0%,rgba(0, 0, 0, 0.5) 51%,rgba(0, 0, 0, 1) 100%)` }}>
                 <div className={style.movieContainer}>
                     {carregando ? <MovieDetailsSkeleton /> : (
-                        <>
-                            <div className={style.moviePosterImg}>
+                        movie ? <>
+                            < div className={style.moviePosterImg}>
                                 <img className={style.moviePoster} src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movie?.poster_path}`} />
                             </div>
                             <div className={style.infoContainer}>
@@ -54,10 +54,10 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
                                 <h3>Sinopse</h3>
                                 <p>{movie?.overview}</p>
                             </div>
-                        </>
+                        </> : <h1>Filme não encontrado</h1>
                     )}
                 </div>
-            </Box>
-        </Layout>
+            </Box >
+        </Layout >
     )
 }
