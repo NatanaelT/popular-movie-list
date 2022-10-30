@@ -1,6 +1,6 @@
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SearchIcon from '@mui/icons-material/Search';
-import { Autocomplete, Badge, Button, CircularProgress, Divider, IconButton, Menu, MenuItem, TextField } from '@mui/material';
+import { Autocomplete, Badge, Button, CircularProgress, Divider, IconButton, Menu, MenuItem, TextField, useMediaQuery } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -25,6 +25,7 @@ export default function Navbar() {
   const router = useRouter();
   const openFavorites = Boolean(anchorEl);
   const debouncedSearch = useDebounce(search ?? '', 500);
+  const matches = useMediaQuery('(min-width:600px)');
 
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -74,7 +75,7 @@ export default function Navbar() {
               id="asynchronous-movies-search"
               noOptionsText={search ? 'Nenhum resultado encontrado' : 'Digite para pesquisar'}
               size='small'
-              sx={{ width: 350, marginLeft: '10px', }}
+              sx={{ width: matches ? '450px' : '200px', marginLeft: '10px', }}
               value={value}
               inputValue={inputValue}
               open={openAutocomplete}

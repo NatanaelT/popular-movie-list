@@ -32,10 +32,10 @@ export const MovieDetails: React.FC<MovieDetailsProps> = ({ id }) => {
                 <div className={style.movieContainer}>
                     {carregando ? <MovieDetailsSkeleton /> : (
                         <>
-                            <div>
+                            <div className={style.moviePosterImg}>
                                 <img className={style.moviePoster} src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movie?.poster_path}`} />
                             </div>
-                            <div>
+                            <div className={style.infoContainer}>
                                 <h1 >{movie?.title}</h1>
                                 <h2 >{movie?.tagline}</h2>
                                 <h2 className={style.voteAverage}>

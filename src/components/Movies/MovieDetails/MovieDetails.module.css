@@ -1,7 +1,3 @@
-.moviePoster {
-  border-radius: 5px;
-}
-
 .movieContainer {
   display: flex;
   flex-wrap: nowrap;
@@ -14,13 +10,20 @@
   margin: auto;
 }
 
+.moviePoster {
+  border-radius: 5px;
+}
+
 @media (max-width: 600px) {
   .movieContainer {
     width: 100%;
   }
+  .moviePosterImg {
+    display: none;
+  }
 }
 
-.movieContainer div:first-child {
+.infoContainer {
   margin: 15px;
 }
 
